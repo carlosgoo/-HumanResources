@@ -1,0 +1,129 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+    
+    <body>
+        
+        <ui:composition template="./../PrincipalTemplate.xhtml">
+            <ui:define name="content">
+                <!-- Content Header (Page header) -->
+                <div class="content-header">
+                    <div class="container-fluid">
+                        <div class="row mb-2">
+                            <div class="col-sm-6">
+                                <h1 class="m-0 text-dark">Administración de Usuarios</h1>
+                            </div><!-- /.col -->
+                            <div class="col-sm-6">
+                                <ol class="breadcrumb float-sm-right">
+                                    <li class="breadcrumb-item"><a href="index.devel">Dashboard</a></li>
+                                    <li class="breadcrumb-item active">Usuario</li>
+                                </ol>
+                            </div><!-- /.col -->
+                        </div><!-- /.row -->
+                    </div><!-- /.container-fluid -->
+                </div>
+                <!-- /.content-header -->
+                <!-- Main content -->
+                <section class="content">
+                    <div class="container-fluid">
+                        
+                        <h:form id="tablaUsuarios">
+                            
+                            <p:commandButton icon="pi pi-plus" value="Nuevo Usuario" actionListener="#{usuarioManejador.nuevaEntidad()}" process="@this" 
+                                             update=":detalleUsuario" oncomplete="PF('detailDialog').show()"/>
+                            <br />
+                            
+                            <br />
+                            <p:dataTable id="tbUser" var="entidad" value="#{usuarioManejador.entidadesLista}" paginator="true" rows="5"
+                                         paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                                         rowsPerPageTemplate="5,10,15" reflow="true">   
+                                
+                                <p:column headerText="Codigo de usuario" filterBy="#{entidad.usrId}" filterMatchMode="contains">
+                                    <h:outputText value="#{entidad.usrId}"/>
+                                </p:column>
+                                
+                                <p:column headerText="Email Acceso" filterBy="#{entidad.usrAcceso}" filterMatchMode="contains">
+                                    <h:outputText value="#{entidad.usrAcceso}"/>
+                                </p:column>
+                                
+                                <p:column headerText="Nombre" filterBy="#{entidad.usrNombre}" filterMatchMode="contains">
+                                    <h:outputText value="#{entidad.usrNombre}"/>
+                                </p:column>
+                                
+                                <p:column headerText="Apellido" filterBy="#{entidad.usrApellido}" filterMatchMode="contains">
+                                    <h:outputText value="#{entidad.usrApellido}"/>
+                                </p:column>
+                                
+                                <p:column headerText="Rol" filterBy="#{entidad.tipId.tipNombre}" filterMatchMode="contains" exportable="false">
+                                    <h:outputText value="#{entidad.tipId.tipNombre}"/>
+                                </p:column>
+                                
+                                <p:column style="width:32px;text-align: center" exportable="false">
+                                    <p:commandButton update=":detalleUsuario" actionListener="#{usuarioManejador.completarInformacion(entidad)}" 
+                                                     oncomplete="PF('detailDialog').show()" icon="pi pi-user-edit" title="Ver"/>
+                                </p:column>
+                            </p:dataTable>
+                            
+                            <!--ARCHIVOS PDF,XLS-->
+                            <div style="float:right;padding-bottom: 5px;">
+                                <p:commandButton value="Descargar PDF" ajax="false" icon="pi pi-file-pdf"
+                                                 style = "background: #D90202; border: none;">
+                                    <p:dataExporter type="pdf" target="tbUser" fileName="Detalle de Usuarios"/>
+                                </p:commandButton>
+                                
+                                <p:commandButton value="Descargar Excel" ajax="false" icon="pi pi-file-excel">
+                                    <p:dataExporter type="csv" target="tbUser" fileName="Detalle de Usuarios"/>
+                                </p:commandButton>
+                            </div>
+                            
+                        </h:form>
+                        
+                        <h:form id="detalleUsuario"> 
+                            <p:dialog header="Detalles de Usuario" widgetVar="detailDialog" showEffect="explode"
+                                      hideEffect="hide" resizable="false" position="center">
+                                
+                                <p:panelGrid columns="2" style="border: none !important;">
+                                    
+                                    <h:outputText value="Email Acceso: "/>
+                                    <p:inputText value="#{usuarioManejador.entidadSeleccion.usrAcceso}">
+                                        <f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$"/>
+                                    </p:inputText>
+                                    
+                                    <h:outputText value="Nombre Usuario: "/>
+                                    <p:inputText value="#{usuarioManejador.entidadSeleccion.usrNombre}"/>
+                                    
+                                    <h:outputText value="Apellido Usuario: "/>
+                                    <p:inputText value="#{usuarioManejador.entidadSeleccion.usrApellido}"/>
+                                    
+                                    <h:outputText value="Contraseña: "/>
+                                    <p:password value="#{usuarioManejador.contrasena}"/>
+                                    
+                                    <h:outputText value="1-admin  2-Inactivo"/>
+                                    <h:outputLabel value="Rol:" />
+                                    <p:inputText value="#{usuarioManejador.entidadSeleccion.tipId}"/>
+                                    
+                                    
+                                </p:panelGrid>
+                                <br/>
+                                <center>
+                                    <p:commandButton value="Guardar" icon="pi pi-save" actionListener="#{usuarioManejador.guardarEntidad()}"  rendered="#{usuarioManejador.isNew}" 
+                                                     update=":messages :tablaUsuarios :messagesAll" onsuccess="PF('detailDialog').hide()"/>
+                                    <p:commandButton value="Eliminar" icon="pi pi-trash" actionListener="#{usuarioManejador.eliminarEntidad()}" update=":messages :tablaUsuarios :messagesAll" 
+                                                     onsuccess="PF('detailDialog').hide()"  style = "background: #D90202; border-color: #D90202;" rendered="#{!usuarioManejador.isNew}" />
+                                    <p:commandButton value="Guardar" icon="pi pi-save" actionListener="#{usuarioManejador.guardarEntidad()}"  rendered="#{!usuarioManejador.isNew}" 
+                                                     update=":messages :tablaUsuarios :messagesAll" onsuccess="PF('detailDialog').hide()"/>
+                                </center>
+                            </p:dialog>
+                        </h:form>
+                        
+                    </div><!-- /.container-fluid -->
+                </section>
+            </ui:define>
+        </ui:composition>
+        
+    </body>
+</html>

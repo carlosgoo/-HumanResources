@@ -1,0 +1,115 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <body>
+
+        <ui:composition template="./../PrincipalTemplate.xhtml">
+            <ui:define name="content">
+                <!-- Content Header (Page header) -->
+                <div class="content-header">
+                    <div class="container-fluid">
+                        <div class="row mb-2">
+                            <div class="col-sm-6">
+                                <h1 class="m-0 text-dark">Pagos Generados </h1>
+                            </div><!-- /.col -->
+                            <div class="col-sm-6">
+                                <ol class="breadcrumb float-sm-right">
+                                    <li class="breadcrumb-item"><a href="index.devel">Dashboard</a></li>
+                                    <li class="breadcrumb-item active">Pagos</li>
+                                </ol>
+                            </div><!-- /.col -->
+                        </div><!-- /.row -->
+                    </div><!-- /.container-fluid -->
+                </div>
+                <!-- /.content-header -->
+                <!-- Main content -->
+                <section class="content">
+                    <div class="container-fluid">
+                        <h:form>
+                            <p:dataTable var="planilla" value="#{actualizarDatosManejador.planillaLista}">
+
+                                <p:column style="width:16px">
+                                    <p:rowToggler />
+                                </p:column>
+                                <p:column headerText="ID empleado" filterBy="#{planilla.empId.empId}" filterMatchMode="contains">
+                                    <h:outputText value="#{planilla.empId.empId}" />
+                                </p:column>
+                                <p:column headerText="Nombre" filterBy="#{planilla.empId.empNombre}" filterMatchMode="contains">
+                                    <h:outputText value="#{planilla.empId.empNombre}" />
+                                </p:column>
+                                <p:column headerText="Apellido" filterBy="#{planilla.empId.empApellido}" filterMatchMode="contains">
+                                    <h:outputText value="#{planilla.empId.empApellido}" />
+                                </p:column>
+                                <p:column headerText="Correo" filterBy="#{planilla.empId.empCorreo}" filterMatchMode="contains">
+                                    <h:outputText value="#{planilla.empId.empCorreo}" />
+                                </p:column>
+                                <p:column headerText="Dui" filterBy="#{planilla.empId.empDui}" filterMatchMode="contains">
+                                    <h:outputText value="#{planilla.empId.empDui}" />
+                                </p:column>
+                                <p:column headerText="Cargo" filterBy="#{planilla.empId.carId.carNombre}" filterMatchMode="contains">
+                                    <h:outputText value="#{planilla.empId.carId.carNombre}" />
+                                </p:column>
+
+                                <p:rowExpansion>
+                                    <p:panelGrid  columns="6" columnClasses="label,value" style="width:600px">
+
+                                        <h:outputText value="Salario" />
+                                        <h:outputText value="#{planilla.plaSalarioNeto}" />
+
+                                        <h:outputText value="Horas Extras" />
+                                        <h:outputText value="#{planilla.plaHorasExtras}" />
+
+                                        <h:outputText value="AFP Patronal" />
+                                        <h:outputText value="#{planilla.plaAfpPatronal}" />
+
+                                        <h:outputText value="AFP Laboral" />
+                                        <h:outputText value="#{planilla.plaAfpLaboral}" />
+
+                                        <h:outputText value="ISSS Patronal" />
+                                        <h:outputText value="#{planilla.plaIsssPatronal}" />
+
+                                        <h:outputText value="ISSS Laboral" />
+                                        <h:outputText value="#{planilla.plaIsssLaboral}" />
+
+                                        <h:outputText value="Renta" />
+                                        <h:outputText value="#{planilla.plaRenta}" />
+
+                                        <h:outputText value="Descuentos" />
+                                        <h:outputText value="#{planilla.plaDescuentos}" />
+                                        
+                                        <h:outputText value="Fecha inicio" />
+                                        <h:outputText value="#{planilla.plaFechaInicio}" />
+                                        
+                                        <h:outputText value="Fecha Final" />
+                                        <h:outputText value="#{planilla.plaFechaFin}" />
+                                        
+                                        <h:outputText value="Total a pagar" />
+                                        <h:outputText value="#{planilla.plaSalarioNeto}" />
+                                        
+                                        <h:outputText value="ID empleado" />
+                                        <h:outputText value="#{planilla.empId.empId}" />
+                                        
+                                        <h:outputText value="Nombre" />
+                                        <h:outputText value="#{planilla.empId.empNombre}" />
+                                        
+                                        <h:outputText value="Apellido" />
+                                        <h:outputText value="#{planilla.empId.empApellido}" />
+
+
+
+                                    </p:panelGrid>
+                                </p:rowExpansion>
+                            </p:dataTable>
+                        </h:form>
+                    </div><!-- /.container-fluid -->
+                </section>
+            </ui:define>
+        </ui:composition>
+
+    </body>
+</html>

@@ -1,0 +1,90 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <body>
+        <ui:composition template="./../PrincipalTemplate.xhtml">
+            <ui:define name="content">
+                <!-- Content Header (Page header) -->
+                <div class="content-header">
+                    <div class="container-fluid">
+                        <div class="row mb-2">
+                            <div class="col-sm-6">
+                                <h1 class="m-0 text-dark">Departamentos</h1>
+                            </div><!-- /.col -->
+                            <div class="col-sm-6">
+                                <ol class="breadcrumb float-sm-right">
+                                    <li class="breadcrumb-item"><a href="index.devel">Dashboard</a></li>
+                                    <li class="breadcrumb-item active">Departamento</li>
+                                </ol>
+                            </div><!-- /.col -->
+                        </div><!-- /.row -->
+                    </div><!-- /.container-fluid -->
+                </div>
+                <!-- /.content-header -->
+                <!-- Main content -->
+                <section class="content">    
+                    <div class="container-fluid">
+                        <h:form id="tablaDepartamentos">
+                            <p:dataTable id="tabDep" var="entidad" value="#{actualizarDatosManejador.departamentoLista}" paginator="true" rows="5"
+                                         paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                                         rowsPerPageTemplate="5,10,15" reflow="true">  
+                                <f:facet name="header">
+                                    Departamentos actuales
+                                </f:facet>
+                                <p:column headerText="ID" filterBy="#{entidad.depId}" filterMatchMode="contains">
+                                    <h:outputText  value="#{entidad.depId}"/>
+                                </p:column>
+                                <p:column headerText="Nombre Departamento" filterBy="#{entidad.depNombre}" filterMatchMode="contains">
+                                    <h:outputText value="#{entidad.depNombre}"/>
+                                </p:column>
+                                <p:column headerText="Estado departamento" filterBy="#{entidad.edeId.edeNombre}" filterMatchMode="contains">
+                                    <h:outputText value="#{entidad.edeId.edeNombre}"/>
+                                </p:column>
+                                <p:column style="width:32px;text-align: center" exportable="false">
+                                    <p:commandButton update=":deptDetalles" oncomplete="PF('detailDialog').show()" icon="pi pi-pencil" title="Ver">
+                                        <f:setPropertyActionListener value="#{entidad}" target="#{actualizarDatosManejador.departamento}"/>
+                                    </p:commandButton>
+                                </p:column>
+                            </p:dataTable>
+                            
+                            <!--ARCHIVOS PDF,XLS-->
+                            <div style="float:right;padding-bottom: 5px;">
+                                <p:commandButton value="Descargar PDF" ajax="false" icon="pi pi-file-pdf"
+                                                 style = "background: #D90202; border-color: #D90202;">
+                                    <p:dataExporter type="pdf" target="tabDep" fileName="Detalle de Departamentos"/>
+                                </p:commandButton>
+                                <p:commandButton value="Descargar Excel" ajax="false" icon="pi pi-file-excel">
+                                    <p:dataExporter type="csv" target="tabDep" fileName="Detalle de Departamentos"/>
+                                </p:commandButton>
+                            </div>
+                            
+                        </h:form>
+                        <h:form id="deptDetalles"> 
+                            <p:dialog header="Detalles de departamento" widgetVar="detailDialog" showEffect="explode"
+                                      hideEffect="hide" resizable="false" position="center">
+                                <p:panelGrid columns="2" style="border: none !important;" >
+                                    <h:outputLabel value="Estado departamento:" />
+                                    
+                                    
+                                    <p:selectOneMenu  value="#{actualizarDatosManejador.departamento.edeId}" style="width:125px">
+                                        <f:selectItem  itemLabel="-Seleccione-" itemValue="" />
+                                        <f:selectItems itemLabel="#{depEstd.edeNombre}" var="depEstd" value="#{fKmanejador.estadoDepartamentoList}" />
+                                    </p:selectOneMenu>
+                                    
+                                    
+                                </p:panelGrid>
+                                <center>
+                                    <p:commandButton value="Guardar" icon="pi pi-save" actionListener="#{actualizarDatosManejador.actualizarDepartamento()}" 
+                                                     update=":messages :tablaDepartamentos :messagesAll" oncomplete="PF('detailDialog').hide()"/></center>
+                            </p:dialog>
+                        </h:form>   
+                    </div><!-- /.container-fluid -->
+                </section>
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>

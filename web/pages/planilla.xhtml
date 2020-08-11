@@ -1,0 +1,123 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <body>
+
+        <ui:composition template="./../PrincipalTemplate.xhtml">
+            <ui:define name="content">
+                <!-- Content Header (Page header) -->
+                <div class="content-header">
+                    <div class="container-fluid">
+                        <div class="row mb-2">
+                            <div class="col-sm-6">
+                                <h1 class="m-0 text-dark">Generacion de planillas </h1>
+                            </div><!-- /.col -->
+                            <div class="col-sm-6">
+                                <ol class="breadcrumb float-sm-right">
+                                    <li class="breadcrumb-item"><a href="index.devel">Dashboard</a></li>
+                                    <li class="breadcrumb-item active">Planillas</li>
+                                </ol>
+                            </div><!-- /.col -->
+                        </div><!-- /.row -->
+                    </div><!-- /.container-fluid -->
+                </div>
+                <!-- /.content-header -->
+
+
+
+
+                <!-- Main content -->
+                <section class="content">    
+                    <div class="container-fluid">
+
+                        <h:form>
+                            <p:panelGrid columns="2" >
+                                <h:outputText value="Codigo unico de planilla "/>
+                                <p:inputText value="#{planillaManejador.codigo}"/>
+                                <h:outputText value="Fecha Inicio"/>
+                                <p:calendar value="#{planillaManejador.fecha_inicio}" pattern="dd/MM/yyyy"/>
+                                <h:outputText value="Fecha fin"/>
+                                <p:calendar value="#{planillaManejador.fecha_fin}" pattern="dd/MM/yyyy"/>
+                            </p:panelGrid>
+                            <br/>
+                            <br/>
+                            <p:commandButton value="Generar planilla" action="#{planillaManejador.generarPlanilla()}"  
+                                             update=":messages :planilla :messagesAll"  icon="pi pi-plus"/>
+                            <br/>
+
+                        </h:form>
+
+                        <p:outputLabel value="Planilla generada"/>
+                        <h:form id="planilla">
+                            
+                            <!--ARCHIVOS PDF,XLS-->
+                            <div style="float:right;padding-bottom: 5px;">
+                                <p:commandButton value="Descargar PDF" ajax="false" icon="pi pi-file-pdf"
+                                                 style = "background: #D90202; border-color: #D90202;">
+                                    <p:dataExporter type="pdf" target="planillaT" fileName="Planilla"/>
+                                </p:commandButton>
+                                <p:commandButton value="Descargar Excel" ajax="false" icon="pi pi-file-excel">
+                                    <p:dataExporter type="csv" target="planillaT" fileName="Planilla"/>
+                                </p:commandButton>
+                            </div>
+                            
+                            <p:dataTable id="planillaT" var="pla" value="#{planillaManejador.planillaPorCodigo}" style="margin-bottom:20px"
+                                         paginator="true" rows="10">
+                                <p:column headerText="Empleado" >
+                                    <h:outputText value="#{pla.empId.empNombre}"/>
+                                </p:column>
+                                <p:column headerText="ID planilla" sortBy="#{pla.plaId}" >
+                                    <h:outputText value="#{pla.plaId}"/>
+                                </p:column>
+                                <p:column headerText="Codigo" >
+                                    <h:outputText value="#{pla.plaCodigo}"/>
+                                </p:column>
+
+                                <p:column headerText="AFP patronal">
+                                    <h:outputText value="#{pla.plaAfpPatronal}"/>
+                                </p:column>
+                                <p:column headerText="AFP Laboral">
+                                    <h:outputText value="#{pla.plaAfpLaboral}"/>
+                                </p:column>
+                                <p:column headerText="ISSS patronal">
+                                    <h:outputText value="#{pla.plaIsssPatronal}"/>
+                                </p:column>
+                                <p:column headerText="ISSS Laboral">
+                                    <h:outputText value="#{pla.plaIsssLaboral}"/>
+                                </p:column>
+                                <p:column headerText="Renta">
+                                    <h:outputText value="#{pla.plaRenta}"/>
+                                </p:column>
+                                
+                                <p:column headerText="Fecha Inicio">
+                                    <h:outputText value="#{pla.plaFechaInicio}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy " />
+
+                                    </h:outputText>
+                                </p:column>
+                                <p:column headerText="Fecha Fin">
+                                    <h:outputText value="#{pla.plaFechaFin}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy " />
+
+                                    </h:outputText>
+                                </p:column>
+                                <p:column headerText="Salario Neto">
+                                    <h:outputText value="#{pla.plaSalarioNeto}"/>
+                                </p:column>
+
+                            </p:dataTable>
+                        </h:form>
+                    </div><!-- /.container-fluid -->
+                </section>
+
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>
