@@ -1,6 +1,0 @@
-projectKey=HRSYSTEM
-serverUrl=http://35.225.209.207:9000
-serverVersion=8.4.0.35506
-dashboardUrl=http://35.225.209.207:9000/dashboard?id=HRSYSTEM
-ceTaskId=AXPW3yZ1aNzFPOA64YnW
-ceTaskUrl=http://35.225.209.207:9000/api/ce/task?id=AXPW3yZ1aNzFPOA64YnW

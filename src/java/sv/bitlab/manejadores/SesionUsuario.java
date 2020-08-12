@@ -128,6 +128,7 @@ public class SesionUsuario {
 
         }
     }
+    //esto es un comentraio para realizar pruebas de commit
 
     //Valida si el usuario tiene sesion o no 
     public void validarSesion() {
