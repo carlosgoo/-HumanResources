@@ -18,6 +18,8 @@ import javax.faces.context.FacesContext;
  */
 public class UtilidadesManejador {
     
+    //esto es una prueba de commit
+    
     //Envia un mensaje personalizado
     public static void lanzarMensaje(FacesMessage.Severity severidad, String encabezado, String detalle){
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(severidad, encabezado, detalle));
